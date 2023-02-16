@@ -1,6 +1,11 @@
-import '@/styles/globals.css'
-import type { AppProps } from 'next/app'
+import type { AppProps } from 'next/app';
+import { ProvidersWrapper } from '../components/ProvidersWrapper';
+import '@/styles/globals.css';
 
 export default function App({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <ProvidersWrapper>
+      <Component {...pageProps} />
+    </ProvidersWrapper>
+  );
 }
