@@ -1,11 +1,16 @@
+// eslint-disable-next-line import/extensions
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
-// eslint-disable-next-line import/extensions
+import { useState } from 'react';
 import { Login } from '../components/Login';
 import { AnalyticsForm } from '../components/AnalyticsForm';
+import { AnalyticsModel } from '../models/responseModels';
+import { AnalyticsCharts } from '../components/AnalyticsCharts';
 
 export default function Home() {
   const { data: session } = useSession();
+  const [analytics, setAnalytics] = useState<AnalyticsModel>();
+
   return (
     <>
       <Head>
@@ -18,7 +23,8 @@ export default function Home() {
         <header>
           <Login />
         </header>
-        {session && <AnalyticsForm />}
+        {session && <AnalyticsForm setAnalytics={setAnalytics} />}
+        {analytics && <AnalyticsCharts analytics={analytics} />}
       </div>
     </>
   );

@@ -35,7 +35,6 @@ export default NextAuth({
         // eslint-disable-next-line no-param-reassign
         token.token.accessToken = token.account.access_token;
       }
-      console.log('Token: ', token.token);
 
       return token.token;
     },
