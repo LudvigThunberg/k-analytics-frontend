@@ -4,7 +4,6 @@ import { getToken } from 'next-auth/jwt';
 import { GooglePropertiesResponse } from '../../models/responseModels';
 
 const secret = process.env.SECRET;
-/* let accessToken = ''; */
 
 export default async function handler(
   req: NextApiRequest,

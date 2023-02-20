@@ -1,31 +1,23 @@
 import axios from 'axios';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { GoogleProperties } from '../models/responseModels';
+import { AnalyticsModel, GoogleProperties } from '../models/responseModels';
 import { metrics } from '../GAMetrics&Dimentions/metricsList';
-import { dimentions } from '../GAMetrics&Dimentions/dimentionsList';
+import { dimensions } from '../GAMetrics&Dimentions/dimensionsList';
 
-/* interface AnalyticsFormData {
-  property: string;
-  fromDate: string;
-  toDate: string;
-} */
+interface AnalyticsFormProps {
+  setAnalytics(data: AnalyticsModel): void;
+}
 
-export const AnalyticsForm = () => {
+export const AnalyticsForm = ({ setAnalytics }: AnalyticsFormProps) => {
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
+
   const [properties, setProperties] = useState<GoogleProperties[]>([]);
 
-  const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    axios
-      .get(
-        `api/get-google-analytics?property=${data.property}&fromDate=${data.fromDate}&toDate=${data.toDate}&metric=${data.metric}&dimention=${data.dimention}`,
-      )
-      .then((response) => console.log('RESPONSE.DATA: ', response.data));
-  };
   // GET Google logged in user analytics projects
   useEffect(() => {
     axios
@@ -35,8 +27,22 @@ export const AnalyticsForm = () => {
       .then((prop) => {
         setProperties(prop.data);
       });
-    // setProperties(propertiesResponse)
   }, []);
+
+  const handleAnalyticsResponse = (data: AnalyticsModel) => {
+    setAnalytics(data);
+  };
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    const chartLabel = metrics.find((metric) => metric.apiName === data.metric);
+    axios
+      .get<AnalyticsModel>(
+        `api/get-google-analytics?property=${data.property}&fromDate=${data.fromDate}&toDate=${data.toDate}&metric=${data.metric}&dimension=${data.dimension}&label=${chartLabel?.displayName}`,
+      )
+      .then((response) => {
+        handleAnalyticsResponse(response.data);
+      });
+  };
 
   const propertyOptions = properties.map((property) => (
     <option key={property.property} value={property.property}>
@@ -50,9 +56,9 @@ export const AnalyticsForm = () => {
     </option>
   ));
 
-  const dimentionOptions = dimentions.map((dimention) => (
-    <option key={dimention.apiName} value={dimention.apiName}>
-      {dimention.displayName}
+  const dimensionOptions = dimensions.map((d) => (
+    <option key={d.apiName} value={d.apiName}>
+      {d.displayName}
     </option>
   ));
 
@@ -64,14 +70,13 @@ export const AnalyticsForm = () => {
         </select>
         <input type="date" {...register('fromDate', { required: true })} />
         <input type="date" {...register('toDate', { required: true })} />
-        <select id="dimention" {...register('dimention', { required: true })}>
-          {dimentionOptions}
+        <select id="dimension" {...register('dimension', { required: true })}>
+          {dimensionOptions}
         </select>
         <select id="metric" {...register('metric', { required: true })}>
           {metricOptions}
         </select>
         {errors.exampleRequired && <span>This field is required</span>}
-
         <input type="submit" />
       </form>
     </div>

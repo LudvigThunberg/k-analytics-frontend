@@ -3,7 +3,6 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { getToken } from 'next-auth/jwt';
 
 const secret = process.env.SECRET;
-/* let accessToken = ''; */
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,11 +11,7 @@ export default async function handler(
   const token = await getToken({ req, secret });
   const auth = token?.accessToken;
 
-  const property = req.query?.property;
-  const fromDate = req.query?.fromDate;
-  const toDate = req.query?.toDate;
-  const metric = req.query?.metric;
-  const dimention = req.query?.dimention;
+  const { property, fromDate, toDate, metric, dimension, label } = req.query;
 
   const config = {
     headers: {
@@ -27,15 +22,14 @@ export default async function handler(
   try {
     const response = (
       await axios.get(
-        `http://localhost:8000/google/analytics/?property=${property}&fromDate=${fromDate}&toDate=${toDate}&metric=${metric}&dimention=${dimention}`,
+        `http://localhost:8000/google/analytics/?property=${property}&fromDate=${fromDate}&toDate=${toDate}&metric=${metric}&dimension=${dimension}&label=${label}`,
         config,
       )
     ).data;
-    console.log('API-RESPONSE', response);
 
     res.send(response);
   } catch (error) {
-    console.log('ERRORRRS: ', error);
+    console.log('ERROR: ', error);
     res.send(error);
   }
 }
