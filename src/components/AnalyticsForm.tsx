@@ -1,16 +1,12 @@
-import axios from 'axios';
+/* eslint-disable arrow-body-style */
+/* import axios from 'axios';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import { useEffect, useState } from 'react';
-import { AnalyticsModel, GoogleProperties } from '../models/responseModels';
 import { metrics } from '../GAMetrics&Dimentions/metricsList';
-import { dimensions } from '../GAMetrics&Dimentions/dimensionsList';
+import { dimensions } from '../GAMetrics&Dimentions/dimensionsList'; */
 
-interface AnalyticsFormProps {
-  setAnalytics(data: AnalyticsModel): void;
-}
-
-export const AnalyticsForm = ({ setAnalytics }: AnalyticsFormProps) => {
-  const {
+export const AnalyticsForm = () => {
+  /*  const {
     register,
     handleSubmit,
     formState: { errors },
@@ -25,6 +21,8 @@ export const AnalyticsForm = ({ setAnalytics }: AnalyticsFormProps) => {
         withCredentials: true,
       })
       .then((prop) => {
+        console.log('PROPPERTIES ', prop.data);
+
         setProperties(prop.data);
       });
   }, []);
@@ -60,11 +58,11 @@ export const AnalyticsForm = ({ setAnalytics }: AnalyticsFormProps) => {
     <option key={d.apiName} value={d.apiName}>
       {d.displayName}
     </option>
-  ));
+  )); */
 
   return (
     <div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      {/* <form onSubmit={handleSubmit(onSubmit)}>
         <select id="property" {...register('property', { required: true })}>
           {propertyOptions}
         </select>
@@ -78,7 +76,7 @@ export const AnalyticsForm = ({ setAnalytics }: AnalyticsFormProps) => {
         </select>
         {errors.exampleRequired && <span>This field is required</span>}
         <input type="submit" />
-      </form>
+      </form> */}
     </div>
   );
 };
