@@ -31,7 +31,7 @@ export default async function handler(
   console.log('CONFIG', config);
 
   try {
-    await axios.get(`${process.env.BASE_URL}/google/credentials`, config);
+    await axios.get(`${process.env.BASE_URL}/google/login`, config);
 
     res.send(200);
   } catch (error) {

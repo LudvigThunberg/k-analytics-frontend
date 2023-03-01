@@ -8,17 +8,11 @@ export const Login = () => {
   const { data: session } = useSession();
 
   useEffect(() => {
-    console.log('SESSIONLOG');
-
     if (session) {
-      console.log('SESSION: ', session);
-
       try {
-        axios
-          .get(`/api/post-google-credentials?username=${session.user?.name}`)
-          .then((response) => {
-            console.log('RES.RES', response);
-          });
+        axios.get(
+          `/api/post-google-credentials?username=${session.user?.name}`,
+        );
       } catch (error) {
         console.log(error);
       }
